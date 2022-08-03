@@ -8,13 +8,12 @@ import (
 	"net/rpc"
 	"os"
 	"os/signal"
-	"path"
+	"spiral/goridge"
 	"syscall"
 	"time"
 
 	"github.com/oklog/run"
 	"github.com/pkg/errors"
-	"github.com/spiral/goridge/v2"
 )
 
 var g run.Group
@@ -152,42 +151,43 @@ func checkAddr(network, addr string) (func(), error) {
 	if network != "unix" {
 		return func() {}, nil
 	}
-	if _, err := os.Stat(addr); !os.IsNotExist(err) {
-		return func() {}, os.Remove(addr)
-	}
-	if err := os.MkdirAll(path.Dir(addr), os.ModePerm); err != nil {
-		return func() {}, err
-	}
-	if ok, err := isWritable(path.Dir(addr)); err != nil || !ok {
-		return func() {}, errors.Wrap(err, "socket directory is not writable")
-	}
-	return func() { os.Remove(addr) }, nil
+	panic("暂只支持tcp")
+	//if _, err := os.Stat(addr); !os.IsNotExist(err) {
+	//	return func() {}, os.Remove(addr)
+	//}
+	//if err := os.MkdirAll(path.Dir(addr), os.ModePerm); err != nil {
+	//	return func() {}, err
+	//}
+	////if ok, err := isWritable(path.Dir(addr)); err != nil || !ok {
+	////	return func() {}, errors.Wrap(err, "socket directory is not writable")
+	////}
+	//return func() { os.Remove(addr) }, nil
 }
 
-func isWritable(path string) (isWritable bool, err error) {
-	info, err := os.Stat(path)
-	if err != nil {
-		return false, err
-	}
-
-	if !info.IsDir() {
-		return false, fmt.Errorf("%s isn't a directory", path)
-	}
-
-	// Check if the user bit is enabled in file permission
-	if info.Mode().Perm()&(1<<(uint(7))) == 0 {
-		return false, fmt.Errorf("write permission bit is not set on this %s for user", path)
-	}
-
-	var stat syscall.Stat_t
-	if err = syscall.Stat(path, &stat); err != nil {
-		return false, err
-	}
-
-	err = nil
-	if uint32(os.Geteuid()) != stat.Uid {
-		return false, errors.Errorf("user doesn't have permission to write to %s", path)
-	}
-
-	return true, nil
-}
+//func isWritable(path string) (isWritable bool, err error) {
+//	info, err := os.Stat(path)
+//	if err != nil {
+//		return false, err
+//	}
+//
+//	if !info.IsDir() {
+//		return false, fmt.Errorf("%s isn't a directory", path)
+//	}
+//
+//	// Check if the user bit is enabled in file permission
+//	if info.Mode().Perm()&(1<<(uint(7))) == 0 {
+//		return false, fmt.Errorf("write permission bit is not set on this %s for user", path)
+//	}
+//
+//	var stat syscall.Stat_t
+//	if err = syscall.Stat(path, &stat); err != nil {
+//		return false, err
+//	}
+//
+//	err = nil
+//	if uint32(os.Geteuid()) != stat.Uid {
+//		return false, errors.Errorf("user doesn't have permission to write to %s", path)
+//	}
+//
+//	return true, nil
+//}
