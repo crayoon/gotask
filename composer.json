@@ -1,12 +1,12 @@
 {
-    "name": "hyperf/gotask",
+    "name": "crayoon/gotask",
     "type": "library",
     "license": "MIT",
     "keywords": [
         "php",
         "hyperf"
     ],
-    "description": "A replacement for Swoole TaskWorker in Go",
+    "description": "A replacement for Swoole TaskWorker in Go. see hyperf/gotask",
     "autoload": {
         "psr-4": {
             "Hyperf\\GoTask\\": "src/"
@@ -42,8 +42,5 @@
     "scripts": {
     },
     "extra": {
-        "hyperf": {
-            "config": "Hyperf\\GoTask\\ConfigProvider"
-        }
     }
 }
