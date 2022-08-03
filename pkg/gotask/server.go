@@ -8,12 +8,12 @@ import (
 	"net/rpc"
 	"os"
 	"os/signal"
-	"spiral/goridge"
 	"syscall"
 	"time"
 
 	"github.com/oklog/run"
 	"github.com/pkg/errors"
+	"github.com/spiral/goridge/v2"
 )
 
 var g run.Group
