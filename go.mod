@@ -1,4 +1,4 @@
-module github.com/hyperf/gotask/v2
+module github.com/crayoon/gotask/v1
 
 go 1.13
 
