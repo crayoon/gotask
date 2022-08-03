@@ -23,9 +23,10 @@
         "hyperf/pool": "^2.0.0",
         "hyperf/process": "^2.0.0",
         "spiral/goridge": "^2.4.1",
-        "symfony/event-dispatcher": "^4.4"
+        "symfony/event-dispatcher": "^5.1"
     },
     "require-dev": {
+        "ext-mongodb": "*",
         "friendsofphp/php-cs-fixer": "^2.14",
         "hyperf/command": "^2.0.0",
         "hyperf/config": "^2.0.0",
@@ -40,6 +41,12 @@
         "sort-packages": true
     },
     "scripts": {
+        "test": "go build -o app example/*.go && go build -o mongo example/mongo_client/*.go && phpunit -c phpunit.xml --colors=always",
+        "start-test-server": "php tests/TestServer.php",
+        "test-go": "/bin/bash -c 'php tests/TestServer.php & sleep 5 && go test ./...'",
+        "analyse": "phpstan analyse --memory-limit 300M -l 0 ./src",
+        "cs-fix": "php-cs-fixer fix $1",
+        "binary": "go build -o mongo example/mongo_client/*.go"
     },
     "extra": {
     }
