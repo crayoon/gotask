@@ -8,6 +8,7 @@ import (
 	"net/rpc"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
@@ -27,9 +28,12 @@ func checkProcess(pid int, quit chan bool) {
 		close(quit)
 		return
 	}
-	err = process.Signal(syscall.Signal(0))
-	if err != nil {
-		close(quit)
+	//针对windows 报错 先屏蔽
+	if runtime.GOOS != "windows" {
+		err = process.Signal(syscall.Signal(0))
+		if err != nil {
+			close(quit)
+		}
 	}
 }
 
